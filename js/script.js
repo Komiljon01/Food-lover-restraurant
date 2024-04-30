@@ -36,4 +36,14 @@ window.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  // Loader
+  const loaderWrapper = document.querySelector(".loader-wrapper");
+
+  setTimeout(() => {
+    loaderWrapper.style.opacity = "0";
+    setTimeout(() => {
+      loaderWrapper.style.display = "none";
+    }, 1000);
+  }, 3000);
 });
