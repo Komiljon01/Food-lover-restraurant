@@ -225,4 +225,50 @@ window.addEventListener("DOMContentLoaded", () => {
       ".offers-items"
     ).render();
   });
+
+  // Form
+  const form = document.querySelector("form"),
+    telegramTokenBot = "6271273651:AAFRV4_UO7rWkyYV-LqfzlMQWvX5I3b-BeQ",
+    chatID = "714012440";
+
+  const message = {
+    loading: "Loading...",
+    success: "Thanks for your contacts 😎",
+    failure: "Something went wrong 🤔",
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const statusMessage = document.createElement("div");
+    statusMessage.textContent = message.loading;
+    form.append(statusMessage);
+
+    const formData = new FormData(form);
+    const obj = {};
+
+    formData.forEach((value, key) => {
+      obj[key] = value;
+    });
+
+    form.reset();
+
+    fetch(`https://api.telegram.org/bot${telegramTokenBot}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatID,
+        text: `
+          👤 Name: ${obj.name}, 
+          📞 Phone: ${obj.phone}`,
+      }),
+    })
+      .then(() => (statusMessage.textContent = message.success))
+      .catch(() => (statusMessage.textContent = message.failure))
+      .finally(() =>
+        setTimeout(() => {
+          statusMessage.remove();
+        }, 2000)
+      );
+  });
 });
