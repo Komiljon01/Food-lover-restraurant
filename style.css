@@ -920,7 +920,15 @@ form button {
   border-radius: 50%;
   position: relative;
   animation: rotate 1s linear infinite;
+  margin: 0 auto;
 }
+
+.loaderModal {
+  margin: 30px auto 0;
+  width: 30px;
+  height: 30px;
+}
+
 .loader::before,
 .loader::after {
   content: "";
