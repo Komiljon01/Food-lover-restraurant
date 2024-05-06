@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("DOMContentLoaded", () => {
   // Tabs
   const tabsParent = document.querySelector(".tabheader__items"),
@@ -183,48 +184,25 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const offers = [
-    {
-      src: "./img/offer1.png",
-      alt: "Quattro Pasta",
-      title: "Quattro Pasta",
-      descr:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, quibusdam.",
-      discount: 55,
-      sale: 15,
-    },
-    {
-      src: "./img/offer2.png",
-      alt: "Vegertarian Pasta",
-      title: "Vegertarian Pasta",
-      descr:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, quibusdam.",
-      discount: 55,
-      sale: 22,
-    },
-    {
-      src: "./img/offer3.png",
-      alt: "Gluten-Free Pasta",
-      title: "Gluten-Free Pasta",
-      descr:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, quibusdam.",
-      discount: 55,
-      sale: 25,
-    },
-  ];
-
-  offers.forEach((offer) => {
-    const { src, alt, title, descr, discount, sale } = offer;
-    new OfferMenu(
-      src,
-      alt,
-      title,
-      descr,
-      discount,
-      sale,
-      ".offers-items"
-    ).render();
-  });
+  fetch("http://localhost:3000/offers", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((response) => response.json())
+    .then((offers) => {
+      offers.forEach((offer) => {
+        const { src, alt, title, descr, discount, sale } = offer;
+        new OfferMenu(
+          src,
+          alt,
+          title,
+          descr,
+          discount,
+          sale,
+          ".offers-items"
+        ).render();
+      });
+    });
 
   // Form
   const form = document.querySelector("form"),
@@ -242,7 +220,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const loader = document.createElement("div");
     loader.classList.add("loader", "loaderModal");
-    // loader.style.marginTop = "30px";
     form.append(loader);
 
     const formData = new FormData(form);
