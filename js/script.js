@@ -39,14 +39,14 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // Loader
-  /* const loader = document.querySelector(".loader-wrapper");
+  const loader = document.querySelector(".loader-wrapper");
 
   setTimeout(() => {
     loader.style.opacity = 0;
     setTimeout(() => {
       loader.style.display = "none";
     }, 100);
-  }, 3000); */
+  }, 3000);
 
   // Timer
   const deadline = "2025-01-01";
@@ -141,7 +141,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const modalTimer = setTimeout(openModal, 600000);
+  const modalTimer = setTimeout(openModal, 6000);
 
   // Classes
   class OfferMenu {
@@ -306,12 +306,11 @@ window.addEventListener("DOMContentLoaded", () => {
   nextSlider.addEventListener("click", () => {
     if (
       offset ===
-      +slidesWrapperWidth.slice(0, slidesWrapperWidth.length - 2) *
-        (slides.length - 1)
+      +slidesWrapperWidth.replace(/\D/g, "") * (slides.length - 1)
     ) {
       offset = 0;
     } else {
-      offset += +slidesWrapperWidth.slice(0, slidesWrapperWidth.length - 2);
+      offset += +slidesWrapperWidth.replace(/\D/g, "");
     }
     slidesInner.style.transform = `translateX(-${offset}px)`;
 
@@ -330,11 +329,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   prevSlider.addEventListener("click", () => {
     if (offset === 0) {
-      offset =
-        +slidesWrapperWidth.slice(0, slidesWrapperWidth.length - 2) *
-        (slides.length - 1);
+      offset = +slidesWrapperWidth.replace(/\D/g, "") * (slides.length - 1);
     } else {
-      offset -= +slidesWrapperWidth.slice(0, slidesWrapperWidth.length - 2);
+      offset -= +slidesWrapperWidth.replace(/\D/g, "");
     }
     slidesInner.style.transform = `translateX(-${offset}px)`;
 
