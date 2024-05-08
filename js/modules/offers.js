@@ -1,3 +1,5 @@
+import getResources from "../services/get-resources";
+
 function offers(offersParentSelector) {
   class OfferMenu {
     constructor(src, alt, title, descr, discount, sale, parentSelector) {
@@ -39,25 +41,20 @@ function offers(offersParentSelector) {
     }
   }
 
-  fetch("http://localhost:3000/offers", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => response.json())
-    .then((offers) => {
-      offers.forEach((offer) => {
-        const { src, alt, title, descr, discount, sale } = offer;
-        new OfferMenu(
-          src,
-          alt,
-          title,
-          descr,
-          discount,
-          sale,
-          offersParentSelector
-        ).render();
-      });
+  getResources().then((offers) => {
+    offers.forEach((offer) => {
+      const { src, alt, title, descr, discount, sale } = offer;
+      new OfferMenu(
+        src,
+        alt,
+        title,
+        descr,
+        discount,
+        sale,
+        offersParentSelector
+      ).render();
     });
+  });
 }
 
 export default offers;

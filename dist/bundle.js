@@ -40,22 +40,32 @@ function form(formSelector, modalTimer) {
       obj[key] = value;
     });
 
-    form.reset();
-
-    fetch(`https://api.telegram.org/bot${telegramTokenBot}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatID,
-        text: `
-        👤 Name: ${obj.name}, 
-        📞 Phone: ${obj.phone}`,
-      }),
-    })
-      .then(() => showModalMessage(message.success))
-      .catch(() => showModalMessage(message.failure))
-      .finally(() => loader.remove());
+    sendMessage(loader, obj);
   });
+
+  async function sendMessage(loader, object) {
+    try {
+      await fetch(
+        `https://api.telegram.org/bot${telegramTokenBot}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatID,
+            text: `
+        👤 Name: ${object.name}, 
+        📞 Phone: ${object.phone}`,
+          }),
+        }
+      );
+      showModalMessage(message.success);
+    } catch {
+      showModalMessage(message.failure);
+    } finally {
+      loader.remove();
+      form.reset();
+    }
+  }
 
   function showModalMessage(message) {
     const modalDialog = document.querySelector(".modal__dialog");
@@ -190,6 +200,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_get_resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/get-resources */ "./js/services/get-resources.js");
+
+
 function offers(offersParentSelector) {
   class OfferMenu {
     constructor(src, alt, title, descr, discount, sale, parentSelector) {
@@ -231,25 +244,20 @@ function offers(offersParentSelector) {
     }
   }
 
-  fetch("http://localhost:3000/offers", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => response.json())
-    .then((offers) => {
-      offers.forEach((offer) => {
-        const { src, alt, title, descr, discount, sale } = offer;
-        new OfferMenu(
-          src,
-          alt,
-          title,
-          descr,
-          discount,
-          sale,
-          offersParentSelector
-        ).render();
-      });
+  (0,_services_get_resources__WEBPACK_IMPORTED_MODULE_0__["default"])().then((offers) => {
+    offers.forEach((offer) => {
+      const { src, alt, title, descr, discount, sale } = offer;
+      new OfferMenu(
+        src,
+        alt,
+        title,
+        descr,
+        discount,
+        sale,
+        offersParentSelector
+      ).render();
     });
+  });
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (offers);
@@ -470,6 +478,26 @@ function timer(deadline, selector) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
+
+
+/***/ }),
+
+/***/ "./js/services/get-resources.js":
+/*!**************************************!*\
+  !*** ./js/services/get-resources.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+async function getResources() {
+  const response = await fetch("http://localhost:3000/offers");
+  return await response.json();
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getResources);
 
 
 /***/ })

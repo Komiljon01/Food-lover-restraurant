@@ -25,22 +25,32 @@ function form(formSelector, modalTimer) {
       obj[key] = value;
     });
 
-    form.reset();
-
-    fetch(`https://api.telegram.org/bot${telegramTokenBot}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatID,
-        text: `
-        👤 Name: ${obj.name}, 
-        📞 Phone: ${obj.phone}`,
-      }),
-    })
-      .then(() => showModalMessage(message.success))
-      .catch(() => showModalMessage(message.failure))
-      .finally(() => loader.remove());
+    sendMessage(loader, obj);
   });
+
+  async function sendMessage(loader, object) {
+    try {
+      await fetch(
+        `https://api.telegram.org/bot${telegramTokenBot}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatID,
+            text: `
+        👤 Name: ${object.name}, 
+        📞 Phone: ${object.phone}`,
+          }),
+        }
+      );
+      showModalMessage(message.success);
+    } catch {
+      showModalMessage(message.failure);
+    } finally {
+      loader.remove();
+      form.reset();
+    }
+  }
 
   function showModalMessage(message) {
     const modalDialog = document.querySelector(".modal__dialog");
